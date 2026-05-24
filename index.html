@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSR Piscines – Expert Pisciniste</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0b2d4e;
+    --ocean: #0d5c8a;
+    --aqua: #00b4d8;
+    --aqua-light: #90e0ef;
+    --sand: #f5e6c8;
+    --sand-dark: #c9a96e;
+    --white: #ffffff;
+    --off-white: #f7f9fb;
+    --text: #0b2d4e;
+    --text-muted: #4a6882;
+    --section-bg: #eef4f9;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 4rem;
+    background: rgba(11, 45, 78, 0.96);
+    backdrop-filter: blur(10px);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 0.6rem 4rem; }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--white); letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--aqua); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.82); font-size: 0.85rem;
+    font-weight: 400; letter-spacing: 0.06em; text-decoration: none;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--aqua); }
+  .nav-cta {
+    background: var(--aqua); color: var(--navy) !important;
+    padding: 0.45rem 1.2rem; border-radius: 2px;
+    font-weight: 500 !important; transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--aqua-light) !important; color: var(--navy) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: white; display: block; transition: all 0.3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0b2d4e 0%, #0d5c8a 55%, #0096c7 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding-top: 80px;
+  }
+  .hero-waves {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 120px; overflow: hidden;
+  }
+  .hero-waves svg { width: 100%; height: 100%; }
+  .wave-anim { animation: waveMove 6s ease-in-out infinite alternate; }
+  .wave-anim2 { animation: waveMove2 8s ease-in-out infinite alternate; opacity: 0.5; }
+  @keyframes waveMove { from { transform: translateX(0); } to { transform: translateX(-40px); } }
+  @keyframes waveMove2 { from { transform: translateX(-20px); } to { transform: translateX(30px); } }
+  .hero-bubbles { position: absolute; inset: 0; pointer-events: none; }
+  .bubble {
+    position: absolute; border-radius: 50%;
+    background: rgba(0,180,216,0.12); animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+  }
+  .hero-content { text-align: center; z-index: 2; padding: 2rem; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,180,216,0.18); border: 1px solid rgba(0,180,216,0.4);
+    color: var(--aqua-light); padding: 0.35rem 1rem; border-radius: 20px;
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '●'; font-size: 0.5rem; color: var(--aqua); }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700; color: var(--white);
+    line-height: 1.0; margin-bottom: 0.3em; letter-spacing: -0.01em;
+  }
+  .hero-title em { font-style: italic; color: var(--aqua-light); }
+  .hero-subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.15rem); color: rgba(255,255,255,0.75);
+    font-weight: 300; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--aqua); color: var(--navy);
+    padding: 0.85rem 2rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500; border: none;
+    border-radius: 2px; cursor: pointer; text-decoration: none;
+    letter-spacing: 0.04em; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--aqua-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    padding: 0.85rem 2rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 400; border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 2px; cursor: pointer; text-decoration: none;
+    letter-spacing: 0.04em; transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--aqua); color: var(--aqua); }
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center;
+    margin-top: 3.5rem; padding-bottom: 4rem; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 700; color: var(--aqua-light);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block; font-size: 0.72rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--aqua); font-weight: 500;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    line-height: 1.1; color: var(--navy); margin-bottom: 1.2rem;
+  }
+  .section-title em { font-style: italic; color: var(--ocean); }
+  .section-sub { font-size: 1rem; color: var(--text-muted); font-weight: 300; line-height: 1.8; max-width: 540px; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--white); }
+  .services-header { text-align: center; margin-bottom: 3.5rem; }
+  .services-header .section-sub { margin: 0 auto; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5px; background: rgba(0,100,160,0.08);
+    border: 1.5px solid rgba(0,100,160,0.08);
+  }
+  .service-card {
+    background: var(--white); padding: 2.2rem 2rem;
+    transition: all 0.3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 3px; background: var(--aqua);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .service-card:hover { background: var(--off-white); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 52px; height: 52px; margin-bottom: 1.4rem;
+    background: rgba(0,180,216,0.1); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .service-icon svg { width: 26px; height: 26px; stroke: var(--ocean); fill: none; stroke-width: 1.5; }
+  .service-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; color: var(--navy);
+    margin-bottom: 0.6rem;
+  }
+  .service-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+  .service-list { margin-top: 0.8rem; padding: 0; list-style: none; }
+  .service-list li {
+    font-size: 0.82rem; color: var(--text-muted); padding: 0.2rem 0;
+    padding-left: 1rem; position: relative;
+  }
+  .service-list li::before { content: '—'; position: absolute; left: 0; color: var(--aqua); }
+
+  /* ── ABOUT ── */
+  #about { background: var(--navy); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-visual {
+    position: relative; aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--ocean) 0%, #023e8a 100%);
+    border-radius: 2px; overflow: hidden;
+  }
+  .about-visual::before {
+    content: 'KSR'; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem; font-weight: 700; color: rgba(255,255,255,0.06);
+    letter-spacing: -0.05em; pointer-events: none;
+  }
+  .pool-anim {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 45%;
+    background: rgba(0,180,216,0.2);
+    animation: poolShimmer 4s ease-in-out infinite alternate;
+  }
+  @keyframes poolShimmer {
+    from { opacity: 0.6; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(-5px); }
+  }
+  .about-card {
+    position: absolute; bottom: 2rem; left: 2rem; right: 2rem;
+    background: rgba(255,255,255,0.08); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem 1.5rem;
+    border-radius: 2px;
+  }
+  .about-card p { font-size: 0.82rem; color: rgba(255,255,255,0.7); font-style: italic; line-height: 1.6; }
+  .about-card cite { display: block; margin-top: 0.5rem; font-size: 0.75rem; color: var(--aqua-light); font-style: normal; }
+  .about-content .section-tag { color: var(--aqua-light); }
+  .about-content .section-title { color: var(--white); }
+  .about-content p { font-size: 0.92rem; color: rgba(255,255,255,0.68); line-height: 1.85; margin-bottom: 1rem; font-weight: 300; }
+  .about-features { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem; }
+  .about-feature {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 2px;
+  }
+  .feature-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--aqua); flex-shrink: 0; margin-top: 6px; }
+  .about-feature p { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin: 0; line-height: 1.6; }
+  .about-feature strong { color: rgba(255,255,255,0.9); font-weight: 500; display: block; margin-bottom: 0.1rem; font-size: 0.88rem; }
+
+  /* ── ZONE D'INTERVENTION ── */
+  #zone { background: var(--section-bg); }
+  .zone-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .zone-map {
+    aspect-ratio: 1; background: var(--white);
+    border: 1.5px solid rgba(0,100,160,0.12);
+    border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .zone-map-inner { text-align: center; }
+  .zone-map-icon { font-size: 4rem; line-height: 1; margin-bottom: 1rem; }
+  .zone-map p { font-size: 0.9rem; color: var(--text-muted); }
+  .zone-map strong { font-size: 1.1rem; color: var(--navy); display: block; font-family: 'Cormorant Garamond', serif; }
+  .zone-ping {
+    position: absolute; top: 30%; left: 42%;
+    width: 18px; height: 18px; background: var(--aqua);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0,180,216,0.4);
+    animation: ping 2s ease-out infinite;
+  }
+  @keyframes ping {
+    0%   { box-shadow: 0 0 0 0 rgba(0,180,216,0.4); }
+    70%  { box-shadow: 0 0 0 30px rgba(0,180,216,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,180,216,0); }
+  }
+  .zone-text p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
+  .zone-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag {
+    background: var(--white); border: 1.5px solid rgba(0,100,160,0.15);
+    color: var(--ocean); font-size: 0.78rem; padding: 0.3rem 0.9rem;
+    border-radius: 2px; font-weight: 500;
+  }
+
+  /* ── TARIFS ── */
+  #tarifs { background: var(--white); }
+  .tarifs-header { text-align: center; margin-bottom: 3rem; }
+  .tarifs-header .section-sub { margin: 0 auto; }
+  .tarifs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .tarif-card {
+    border: 1.5px solid rgba(0,100,160,0.12); padding: 2rem;
+    border-radius: 2px; text-align: center; transition: all 0.25s;
+    position: relative;
+  }
+  .tarif-card:hover { border-color: var(--aqua); transform: translateY(-4px); }
+  .tarif-card.featured { border-color: var(--aqua); background: var(--navy); }
+  .tarif-card.featured .tarif-name { color: rgba(255,255,255,0.7); }
+  .tarif-card.featured .tarif-price { color: var(--aqua-light); }
+  .tarif-card.featured .tarif-desc { color: rgba(255,255,255,0.55); }
+  .tarif-card.featured .tarif-item { color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.08); }
+  .tarif-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--aqua); color: var(--navy);
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.2rem 0.8rem; border-radius: 2px;
+    white-space: nowrap;
+  }
+  .tarif-name { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .tarif-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 700; color: var(--navy); line-height: 1;
+  }
+  .tarif-price span { font-size: 1rem; font-weight: 400; color: var(--text-muted); }
+  .tarif-desc { font-size: 0.82rem; color: var(--text-muted); margin: 0.8rem 0 1.5rem; line-height: 1.6; }
+  .tarif-items { list-style: none; text-align: left; }
+  .tarif-item {
+    font-size: 0.84rem; color: var(--text-muted); padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .tarif-item::before { content: '✓'; color: var(--aqua); font-weight: 700; flex-shrink: 0; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--section-bg); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; }
+  .contact-info .section-sub { margin-bottom: 2rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1.2rem;
+    padding: 1.1rem 1.3rem; background: var(--white);
+    border: 1.5px solid rgba(0,100,160,0.1); border-radius: 2px;
+  }
+  .contact-icon {
+    width: 40px; height: 40px; background: rgba(0,180,216,0.1);
+    border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-icon svg { width: 20px; height: 20px; stroke: var(--ocean); fill: none; stroke-width: 1.8; }
+  .contact-item-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.1rem; }
+  .contact-item-val { font-size: 0.92rem; color: var(--navy); font-weight: 500; }
+  .contact-form { background: var(--white); padding: 2.5rem; border: 1.5px solid rgba(0,100,160,0.1); border-radius: 2px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1.5px solid rgba(0,100,160,0.15);
+    background: var(--off-white); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    border-radius: 2px; outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--aqua); background: var(--white); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-submit {
+    width: 100%; padding: 0.9rem; background: var(--navy);
+    color: var(--white); border: none; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+    transition: background 0.2s; margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--ocean); }
+  .form-success {
+    display: none; text-align: center; padding: 2rem;
+    color: var(--ocean); font-size: 0.95rem;
+  }
+  .form-success strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e17; padding: 3rem 2rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .footer-logo span { color: var(--aqua); }
+  .footer-tagline { font-size: 0.8rem; color: rgba(255,255,255,0.35); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; }
+  .footer-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--aqua); }
+  .footer-bottom { font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+  .footer-bottom a { color: var(--aqua); opacity: 0.7; text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.6rem 1.5rem; }
+    .nav-links { display: none; flex-direction: column; gap: 0; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--navy); justify-content: center; align-items: center; font-size: 1.1rem; z-index: 50; }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 0.8rem 0; font-size: 1.1rem; }
+    .hamburger { display: flex; z-index: 200; position: relative; }
+    .about-grid, .zone-content, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-visual { aspect-ratio: 16/9; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 3.5rem 1.2rem; }
+    .services-grid { grid-template-columns: 1fr; gap: 1px; }
+    .tarifs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ────────── NAV ────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">KSR <span>Piscines</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#zone">Zone</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#contact" class="nav-cta">Demander un devis</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ────────── HERO ────────── -->
+<section id="hero">
+  <div class="hero-bubbles" id="bubbles"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Pisciniste Indépendant · Bouches-du-Rhône</div>
+    <h1 class="hero-title">Votre piscine<br><em>entre de bonnes mains</em></h1>
+    <p class="hero-subtitle">Farid Kessouri — 40 ans d'expérience dans le secteur de l'eau et des piscines. Entretien, réparations, mise en route et hivernation pour tous types et toutes tailles de bassins.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Demander un devis gratuit →</a>
+      <a href="#services" class="btn-outline">Voir mes prestations</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">40</div><div class="stat-label">Ans d'expérience</div></div>
+      <div class="stat"><div class="stat-num">Tous</div><div class="stat-label">Types & tailles de piscines</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Suivi personnalisé</div></div>
+      <div class="stat"><div class="stat-num">48h</div><div class="stat-label">Délai d'intervention</div></div>
+    </div>
+  </div>
+  <div class="hero-waves">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="wave-anim" d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 C1350,70 1400,30 1440,40 L1440,80 L0,80Z" fill="white" opacity="0.06"/>
+      <path class="wave-anim2" d="M0,50 C300,10 600,80 900,50 C1100,30 1300,60 1440,50 L1440,80 L0,80Z" fill="white" opacity="0.05"/>
+      <path d="M0,60 C360,20 720,80 1080,60 C1260,50 1380,65 1440,60 L1440,80 L0,80Z" fill="white"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ────────── SERVICES ────────── -->
+<section id="services">
+  <div class="container">
+    <div class="services-header fade-up">
+      <span class="section-tag">Ce que je fais</span>
+      <h2 class="section-title">Toutes les <em>prestations</em> pisciniste</h2>
+      <p class="section-sub">Du nettoyage saisonnier à la réparation d'urgence, je prends en charge votre piscine de A à Z.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <div class="service-title">Nettoyage & Entretien</div>
+        <p class="service-desc">Entretien régulier ou ponctuel de votre bassin pour une eau cristalline tout au long de la saison.</p>
+        <ul class="service-list">
+          <li>Nettoyage du fond et des parois</li>
+          <li>Traitement chimique de l'eau</li>
+          <li>Vérification et nettoyage des filtres</li>
+          <li>Analyse et rééquilibrage de l'eau</li>
+          <li>Contrats d'entretien saisonnier</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="service-title">Réparations & Dépannage</div>
+        <p class="service-desc">Diagnostic rapide et réparations efficaces pour remettre votre installation en état de marche.</p>
+        <ul class="service-list">
+          <li>Remplacement de pompes et moteurs</li>
+          <li>Réparation de fuites (liner, béton)</li>
+          <li>Remplacement de filtres et vannes</li>
+          <li>Dépannage éclairages & chauffage</li>
+          <li>Réparation de systèmes automatiques</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </div>
+        <div class="service-title">Mise en Route</div>
+        <p class="service-desc">Remise en service complète en début de saison pour profiter de votre piscine dès les premiers beaux jours.</p>
+        <ul class="service-list">
+          <li>Remplissage et vérification du niveau</li>
+          <li>Redémarrage des équipements</li>
+          <li>Traitement choc de l'eau</li>
+          <li>Vérification de l'étanchéité</li>
+          <li>Bilan complet des installations</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="service-title">Hivernation</div>
+        <p class="service-desc">Protection de votre piscine pour traverser l'hiver sans dommages et retrouver une installation en parfait état.</p>
+        <ul class="service-list">
+          <li>Abaissement du niveau d'eau</li>
+          <li>Traitement anti-calcaire & antigel</li>
+          <li>Vidange des équipements</li>
+          <li>Pose de bouchons et bâche hivernal</li>
+          <li>Mise en sécurité de l'installation</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="service-title">Remise en État</div>
+        <p class="service-desc">Rénovation complète ou partielle de piscines anciennes ou en mauvais état pour retrouver une eau saine.</p>
+        <ul class="service-list">
+          <li>Traitement des algues et biofilm</li>
+          <li>Réfection de liner ou d'enduit</li>
+          <li>Remplacement d'équipements vétustes</li>
+          <li>Nettoyage haute pression</li>
+          <li>Bilan et rapport complet</li>
+        </ul>
+      </div>
+
+      <div class="service-card fade-up">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <div class="service-title">Accessoires & Équipements</div>
+        <p class="service-desc">Fourniture et installation de tous les accessoires pour améliorer le confort et la sécurité de votre piscine.</p>
+        <ul class="service-list">
+          <li>Robots de nettoyage automatiques</li>
+          <li>Bâches de sécurité et couvertures</li>
+          <li>Systèmes de chauffage (PAC, solaire)</li>
+          <li>Éclairages LED subaquatiques</li>
+          <li>Systèmes de traitement automatiques</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────────── ABOUT ────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="pool-anim"></div>
+        <div class="about-card">
+          <p>« 40 ans passés à travailler l'eau et les piscines — chaque bassin a son histoire, ses particularités. C'est cette expérience qui me permet d'intervenir vite et bien, quelle que soit la situation. »</p>
+          <cite>— Farid Kessouri, fondateur de KSR Piscines</cite>
+        </div>
+      </div>
+      <div class="about-content fade-up">
+        <span class="section-tag">Qui suis-je ?</span>
+        <h2 class="section-title">Farid Kessouri —<br><em>40 ans au service de l'eau</em></h2>
+        <p>Pisciniste indépendant, j'ai consacré <strong style="color:rgba(255,255,255,0.9)">40 ans de ma vie professionnelle</strong> au secteur de l'eau et des piscines. Cette expérience hors du commun me permet d'intervenir avec expertise sur <strong style="color:rgba(255,255,255,0.9)">tous types et toutes tailles de bassins</strong> : piscines privées, semi-collectives, béton, liner, coque, intérieure ou extérieure, petits plunge pools comme grands bassins de nage.</p>
+        <p>Avec KSR Piscines, vous avez un interlocuteur unique — pas de sous-traitance, pas d'intermédiaire. Du premier appel jusqu'à la fin du chantier, c'est moi qui interviens personnellement, avec tout mon savoir-faire et mes équipements.</p>
+        <div class="about-features">
+          <div class="about-feature"><div class="feature-dot"></div><div><strong>Intervention rapide</strong><p>Sous 48h pour les urgences, devis gratuit sous 24h.</p></div></div>
+          <div class="about-feature"><div class="feature-dot"></div><div><strong>Devis transparent</strong><p>Prix clairs et détaillés, sans mauvaises surprises.</p></div></div>
+          <div class="about-feature"><div class="feature-dot"></div><div><strong>Suivi personnalisé</strong><p>Un numéro direct, toujours disponible pour vos questions.</p></div></div>
+          <div class="about-feature"><div class="feature-dot"></div><div><strong>Matériel de qualité</strong><p>Je travaille exclusivement avec des marques reconnues du secteur.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── ZONE ────────── -->
+<section id="zone">
+  <div class="container">
+    <div class="zone-content">
+      <div class="fade-up">
+        <span class="section-tag">Zone d'intervention</span>
+        <h2 class="section-title">J'interviens <em>près de chez vous</em></h2>
+        <div class="zone-text">
+          <p>J'interviens dans tout le département des <strong>Bouches-du-Rhône (13)</strong> — de Marseille à Aix-en-Provence, d'Arles à Martigues, en passant par Aubagne, Salon-de-Provence ou La Ciotat. Pour les chantiers importants (remise en état, installation), je peux étendre mon intervention aux départements limitrophes — n'hésitez pas à me contacter.</p>
+          <p>Je me déplace avec tout mon matériel professionnel et n'interviens jamais par sous-traitance. Vous avez la garantie d'un service direct, rigoureux et personnalisé à chaque visite.</p>
+        </div>
+        <div class="zone-tags">
+          <span class="tag">Marseille</span>
+          <span class="tag">Aix-en-Provence</span>
+          <span class="tag">Aubagne</span>
+          <span class="tag">La Ciotat</span>
+          <span class="tag">Martigues</span>
+          <span class="tag">Salon-de-Provence</span>
+          <span class="tag">Arles</span>
+          <span class="tag">Istres</span>
+          <span class="tag">Vitrolles</span>
+          <span class="tag">Bouches-du-Rhône (13)</span>
+        </div>
+      </div>
+      <div class="zone-map fade-up">
+        <div class="zone-ping"></div>
+        <div class="zone-map-inner">
+          <div class="zone-map-icon">📍</div>
+          <strong>Bouches-du-Rhône (13)</strong>
+          <p>Tout le département<br>+ zones limitrophes sur demande</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── TARIFS ────────── -->
+<section id="tarifs">
+  <div class="container">
+    <div class="tarifs-header fade-up">
+      <span class="section-tag">Tarification</span>
+      <h2 class="section-title">Des tarifs <em>clairs et honnêtes</em></h2>
+      <p class="section-sub">Ces tarifs sont indicatifs. Chaque situation étant unique, un devis personnalisé gratuit est toujours établi avant toute intervention.</p>
+    </div>
+    <div class="tarifs-grid">
+      <div class="tarif-card fade-up">
+        <div class="tarif-name">Entretien ponctuel</div>
+        <div class="tarif-price">À partir de<br><span style="font-size:2rem;">80</span> <span>€</span></div>
+        <p class="tarif-desc">Nettoyage + traitement de l'eau (main d'œuvre)</p>
+        <ul class="tarif-items">
+          <li class="tarif-item">Nettoyage fond & parois</li>
+          <li class="tarif-item">Analyse et traitement eau</li>
+          <li class="tarif-item">Vérification filtre</li>
+          <li class="tarif-item">Rapport d'intervention</li>
+        </ul>
+      </div>
+      <div class="tarif-card featured fade-up">
+        <div class="tarif-badge">⭐ Le plus demandé</div>
+        <div class="tarif-name">Contrat saisonnier</div>
+        <div class="tarif-price">À partir de<br><span style="font-size:2rem;">350</span> <span>€</span></div>
+        <p class="tarif-desc">Mise en route + entretien mensuel + hivernation</p>
+        <ul class="tarif-items">
+          <li class="tarif-item">Mise en route complète</li>
+          <li class="tarif-item">Visites mensuelles incluses</li>
+          <li class="tarif-item">Produits de traitement</li>
+          <li class="tarif-item">Hivernation en fin de saison</li>
+          <li class="tarif-item">Assistance téléphonique</li>
+        </ul>
+      </div>
+      <div class="tarif-card fade-up">
+        <div class="tarif-name">Mise en route / Hivernation</div>
+        <div class="tarif-price">À partir de<br><span style="font-size:2rem;">120</span> <span>€</span></div>
+        <p class="tarif-desc">Prestation complète de début ou fin de saison</p>
+        <ul class="tarif-items">
+          <li class="tarif-item">Bilan équipements</li>
+          <li class="tarif-item">Traitement de l'eau inclus</li>
+          <li class="tarif-item">Vidange des organes (hiver)</li>
+          <li class="tarif-item">Compte-rendu écrit</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 1.8rem; font-size: 0.82rem; color: var(--text-muted);">
+      Tarifs HT, déplacement en sus selon distance. Produits chimiques non inclus sauf mention. <strong>Devis gratuit et sans engagement.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ────────── CONTACT ────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="fade-up">
+        <span class="section-tag">Me contacter</span>
+        <h2 class="section-title">Parlons de <em>votre piscine</em></h2>
+        <p class="section-sub">Devis gratuit sous 24h, sans engagement. Je réponds à toutes vos questions et adapte mes prestations à votre situation.</p>
+        <div class="contact-items" style="margin-top: 2rem;">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Téléphone</div>
+              <div class="contact-item-val">06 XX XX XX XX</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-val">contact@ksr-piscines.fr</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Horaires</div>
+              <div class="contact-item-val">Lun–Sam · 8h–19h</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-item-label">Zone</div>
+              <div class="contact-item-val">Bouches-du-Rhône (13)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-up">
+        <div class="contact-form" id="contactForm">
+          <div id="formContent">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Prénom *</label>
+                <input type="text" placeholder="Jean" required>
+              </div>
+              <div class="form-group">
+                <label>Nom *</label>
+                <input type="text" placeholder="Dupont" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Téléphone *</label>
+              <input type="tel" placeholder="06 00 00 00 00" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="jean.dupont@email.fr">
+            </div>
+            <div class="form-group">
+              <label>Prestation souhaitée *</label>
+              <select required>
+                <option value="" disabled selected>Choisir une prestation…</option>
+                <option>Nettoyage & Entretien</option>
+                <option>Réparation / Dépannage</option>
+                <option>Mise en route</option>
+                <option>Hivernation</option>
+                <option>Remise en état</option>
+                <option>Achat & Installation d'accessoires</option>
+                <option>Contrat saisonnier</option>
+                <option>Autre / Question</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Votre message</label>
+              <textarea placeholder="Décrivez votre piscine et votre besoin (type, dimensions, état…)"></textarea>
+            </div>
+            <button class="form-submit" onclick="submitForm(event)">Envoyer ma demande de devis</button>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <strong>Merci pour votre message !</strong>
+            Je vous recontacte sous 24h pour convenir d'un rendez-vous ou vous faire parvenir un devis personnalisé.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── FOOTER ────────── -->
+<footer>
+  <div class="footer-logo">KSR <span>Piscines</span></div>
+  <div class="footer-tagline">Farid Kessouri · Pisciniste indépendant · Bouches-du-Rhône</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#about">À propos</a>
+    <a href="#zone">Zone d'intervention</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="footer-bottom">
+    © 2024 KSR Piscines · Farid Kessouri · Pisciniste indépendant · Bouches-du-Rhône · <a href="#">Mentions légales</a>
+  </div>
+</footer>
+
+<script>
+  // Bubbles
+  const bc = document.getElementById('bubbles');
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div');
+    const s = Math.random() * 30 + 8;
+    b.className = 'bubble';
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s`;
+    bc.appendChild(b);
+  }
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Hamburger
+  function toggleMenu() {
+    const nl = document.getElementById('navLinks');
+    nl.classList.toggle('open');
+  }
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  }));
+
+  // Fade-up on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+  // Form
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+</body>
+</html>
